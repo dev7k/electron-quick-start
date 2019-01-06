@@ -48,3 +48,28 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+var http = require('http');
+var fs = require('fs');
+
+http.createServer(function (req, res) {
+    res.setHeader('Set-Cookie', 'MyCookie=2');
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(`<!doctype html>
+<html>
+    <head>
+        <title>localhost</title>
+    </head>
+    <body>
+        <h1>localhost</h1>
+        <pre>${req.headers.cookie}</pre>
+        ` +
+        (req.url === '/' ? `
+        <script>
+            setTimeout(() => {
+                location.href = 'http://localhost?' + Date.now();
+            }, 1000);
+        </script>` : '') + `
+    </body>
+</html>`);
+}).listen(80);

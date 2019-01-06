@@ -1,3 +1,19 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
+const electron = require('electron');
+
+const session = electron.remote.session.defaultSession;
+session.cookies.set({
+    url: 'http://.localhost',
+    name: 'MyCookie',
+    value: '1',
+    domain: '.localhost',
+    httpOnly: true,
+    path: '/',
+    secure: false
+}, () => {
+    session.cookies.get({}, (err, cookies) => {
+        console.log('Cookies', JSON.stringify(cookies));
+    });
+    setTimeout(() => {
+        location.href = 'http://localhost';
+    }, 1000);
+});
